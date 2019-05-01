@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>K-Town Car Share</title>
+    <title>Show cars last maintance</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -31,7 +31,6 @@
 
 </head>
 
-
 <body id="page-top" class="index">
 <div id="skipnav"><a href="#maincontent">Skip to main content</a></div>
 
@@ -43,7 +42,7 @@
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="Main.html">K-Town Car Share</a>
+                <a class="navbar-brand" href="AdminMain.html">K-Town Car Share</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -53,36 +52,66 @@
                         <a href="#page-top"></a>
                     </li>
                     <li class="page-scroll">
-                        <a href="join.html">Join Now</a> <!--should link to other pages-->
+                        <a href="Logout.php">Sign Out</a>
                     </li>
-                    <!-- <li class="page-scroll">
-                        <a href="login.html">Sign in</a>
-                    </li> -->
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container-fluid -->
     </nav>
+ 
+    
+    
+	<section id="alldamagecars">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>All cars have travelled 5000km or more since their last maintenance</h2>
+                    <hr class="star-primary">
+                </div>
+            </div>
+			<?php
+		
+				try{
+					$dbh = new PDO('mysql:host=localhost;dbname=ktcs', 'cisc332', 'cisc332password');
+					$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+					$rows = $dbh->query("select CarVINcode , Make, Model, distance
+                                        from cars natural join
+                                        (select t1.CarVINcode, (current - lastmaintain) as distance from
+                                        (SELECT CarVINcode, max(OdometerReading) as lastmaintain FROM car_maintenance_history group by CarVINcode) as t1
+                                        join (SELECT CarVINcode, max(DropoffOdometerReading) as current FROM rental_history group by CarVINcode) as t2 on t1.CarVINcode
+                                        where t1.CarVINcode = t2.CarVINcode) as t3
+                                        where distance > 5000");
+                                        
+					foreach($rows as $row){
+						
+						echo "<div class = 'cars'>
+						<p>CarVINcode: $row[CarVINcode]</p>
+                        <p>Make: $row[Make]</p>
+                        <p>Model: $row[Model]</p>
+                        <p>Distance: $row[distance]</p>	                                              
+						</div>
+                        <br>
 
-    <!-- Header -->
-    <header>
-        <div class="container" id="maincontent" tabindex="-1">
-			<div class = "data">
-				<!--form form name = "Date" action = ".php" method = "POST" enctype = "multipart/form-data"-->
-				<form name = "signin" action = "logincheck.php" method = "POST" enctype = "multipart/form-data">
-					<h2>Sign in:</h2>
-					<p>Email Address: <input type = "email" name = "loginemail" style = "color:black"></p>
-					<p>Password: <input type = "password" name = "password" style = "color:black"></p>
-					<p><input class = "button" type = "submit" name = "Login" value = "login"></p>
-				</form>
-			</div>
-        </div>
-    </header>
-    <header>
-        <div class="container" id="maincontent" tabindex="-1">
-        </div>
-    </header>
-</div>
+                        <style>
+                            .cars {
+      
+                            padding: 20px;
+                            border: 1px solid DarkCyan;
+                            border-radius: 8px;
+                            border-width: 15px;
+                            }
+                        </style>
+						";
+					}
+				}catch(PDOException $e){
+					echo "<h2>No Updating to the Database.<br>The Email Address Has Been Used For Signing Up This Conference.</h2>";
+					die();
+				}
+			?></section>
+
+
+	
 </body>
 </html>

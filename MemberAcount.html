@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>K-Town Car Share</title>
+    <title>My Account</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -43,21 +43,24 @@
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="Main.html">K-Town Car Share</a>
+                <a class="navbar-brand" href="UserMain.html">K-Town Car Share</a>
             </div>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
+            <!-- Collect the nav links, forms, and other content for toggling 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="hidden">
                         <a href="#page-top"></a>
                     </li>
                     <li class="page-scroll">
-                        <a href="join.html">Join Now</a> <!--should link to other pages-->
+                        <a href="join.html">Join Now</a> <!--should link to other pages
                     </li>
-                    <!-- <li class="page-scroll">
+                    <li class="page-scroll">
                         <a href="login.html">Sign in</a>
-                    </li> -->
+                    </li>
+                    <li class="page-scroll">
+                        <a href="#contact">Your Account</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -69,18 +72,14 @@
     <header>
         <div class="container" id="maincontent" tabindex="-1">
 			<div class = "data">
-				<!--form form name = "Date" action = ".php" method = "POST" enctype = "multipart/form-data"-->
-				<form name = "signin" action = "logincheck.php" method = "POST" enctype = "multipart/form-data">
-					<h2>Sign in:</h2>
+				<form form name = "Login" action = "logincheck.php" method = "POST" enctype = "multipart/form-data">
+				<form>
+					<h2>Log In:</h2>
 					<p>Email Address: <input type = "email" name = "loginemail" style = "color:black"></p>
-					<p>Password: <input type = "password" name = "password" style = "color:black"></p>
+					<p>Password: <input type = "text" name = "password" style = "color:black"></p>
 					<p><input class = "button" type = "submit" name = "Login" value = "login"></p>
 				</form>
 			</div>
-        </div>
-    </header>
-    <header>
-        <div class="container" id="maincontent" tabindex="-1">
         </div>
     </header>
 </div>

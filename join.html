@@ -43,7 +43,7 @@
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="index.html">K-Town Car Share</a>
+                <a class="navbar-brand" href="Main.html">K-Town Car Share</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -52,14 +52,11 @@
                     <li class="hidden">
                         <a href="#page-top"></a>
                     </li>
-                    <li class="page-scroll">
-                        <a href="join.html">Join Now</a> <!--should link to other pages-->
-                    </li>
+                   <!--  <li class="page-scroll">
+                        <a href="join.html">Join Now</a> 
+                    </li> -->
                     <li class="page-scroll">
                         <a href="login.html">Sign in</a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="#contact">Your Account</a>
                     </li>
                 </ul>
             </div>
@@ -72,16 +69,20 @@
     <header>
         <div class="container" id="maincontent" tabindex="-1">
 			<div class = "data">
-				<!--form form name = "Date" action = ".php" method = "POST" enctype = "multipart/form-data"-->
+				<form name = "Join" action = "submit.php" method = "POST" enctype = "multipart/form-data">
 				<form>
-					<h2>Create Account</h2>
-					<p>User Name: <input type = "text" name = "username" style = "color:black"></p>
-					<p>Email: <input type = "email" name = "loginemail" style = "color:black"></p>
-					<p>Password: <input type = "text" name = "password" style = "color:black"></p>
-					<p>Address: <input type = "text" name = "address" style = "color:black"></p>
-					<p>Driver License Number: <input type = "text" name = "license" style = "color:black"></p>
-					<p>Phone Number: <input type = "text" name = "phone" style = "color:black"></p>
-					<p><input class = "button" type = "submit" name = "Create" value = "create"></p>
+					<h2>Register</h2>
+					<table border = "0" style = "">
+					<!--<tr><p>User Name: <input type = "text" name = "username" style = "color:black"></p>-->
+                    <tr><p>Name: <input type = "text" name = "name" style = "color:black"></p>
+					<tr><p>Email: <input type = "email" name = "loginemail" style = "color:black"></p>
+					<tr><p>Password: <input type = "password" name = "password1" style = "color:black"></p>
+                    <tr><p>Re-Enter Password: <input type = "password" name = "password2" style = "color:black"></p>
+					<tr><p>Address: <input type = "text" name = "address" style = "color:black"></p>
+					<tr><p>Driver License Number: <input type = "text" name = "license" style = "color:black"></p>
+					<tr><p>Phone Number: <input type = "text" name = "phone" style = "color:black"></p>
+					<tr><p><input class = "button" type = "submit" name = "Create" value = "create"></p>
+					</table> 
 				</form>
 			</div>
         </div>

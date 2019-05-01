@@ -31,7 +31,6 @@
 
 </head>
 
-
 <body id="page-top" class="index">
 <div id="skipnav"><a href="#maincontent">Skip to main content</a></div>
 
@@ -43,7 +42,7 @@
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="Main.html">K-Town Car Share</a>
+                <a class="navbar-brand" href="UserMain.html">K-Town Car Share</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -53,36 +52,57 @@
                         <a href="#page-top"></a>
                     </li>
                     <li class="page-scroll">
-                        <a href="join.html">Join Now</a> <!--should link to other pages-->
+                        <a href="Logout.php">Sign Out</a>
                     </li>
-                    <!-- <li class="page-scroll">
-                        <a href="login.html">Sign in</a>
-                    </li> -->
+                    <li class="page-scroll">
+                        <a href="AccountPage.php">Your Account</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container-fluid -->
     </nav>
-
-    <!-- Header -->
-    <header>
-        <div class="container" id="maincontent" tabindex="-1">
-			<div class = "data">
-				<!--form form name = "Date" action = ".php" method = "POST" enctype = "multipart/form-data"-->
-				<form name = "signin" action = "logincheck.php" method = "POST" enctype = "multipart/form-data">
-					<h2>Sign in:</h2>
-					<p>Email Address: <input type = "email" name = "loginemail" style = "color:black"></p>
-					<p>Password: <input type = "password" name = "password" style = "color:black"></p>
-					<p><input class = "button" type = "submit" name = "Login" value = "login"></p>
-				</form>
+	<?php
+	$name = $_POST['name'];
+	$picname = str_replace(' ', '', $name);
+	try{
+		$dbh = new PDO('mysql:host=localhost;dbname=ktcs', 'cisc332', 'cisc332password');
+		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		
+		$carinfo = $dbh->query("SELECT * FROM
+									(SELECT CarVINcode, CONCAT(Make, Model) as Name, Year, Address, DailyRentalFee FROM cars) as T1
+								WHERE T1.Name = '$picname'");
+		foreach($carinfo as $c){
+			$VIN = $c['CarVINcode'];
+			$address = $c['Address'];
+			$year = $c['Year'];
+			$fee = $c['DailyRentalFee'];
+			echo "<section id='portfolio'>
+			<div class='container'>
+				<div class='row'>
+					<div class='col-lg-12 text-center'>
+						<h2>Detailed Information</h2>
+						<hr class='star-primary'>
+					</div>
+				</div>
+				<img src='img/portfolio/$picname.png' alt = $name style='width:50%; height:auto; float:right;'>	
+				<p>Name: $name</p>
+				<p>Car VIN Code: $VIN</p>
+				<p>Year: $year</p>
+				<p>Pick Up/Drop Off Location: $address</p>
+				<p>Daily Rental Fee: $fee</p>
+				<a class='button' href='reserve.php?carVINcode=$VIN' style='font-size:2em;'>RESERVE</a>
 			</div>
-        </div>
-    </header>
-    <header>
-        <div class="container" id="maincontent" tabindex="-1">
-        </div>
-    </header>
-</div>
+		</section>";
+		}
+	
+		
+	}catch(PDOException $e) {
+		echo "<h2>Failed to connect with the database.</h2>";
+		die();
+	}
+	?>
+	
 </body>
 </html>

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
 
     <meta charset="utf-8">
@@ -31,11 +30,8 @@
 
 </head>
 
-
-<body id="page-top" class="index">
-<div id="skipnav"><a href="#maincontent">Skip to main content</a></div>
-
-    <!-- Navigation -->
+<body>
+	<!-- Navigation -->
     <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -43,7 +39,7 @@
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="Main.html">K-Town Car Share</a>
+                <a class="navbar-brand" href="UserMain.html">K-Town Car Share</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -53,36 +49,71 @@
                         <a href="#page-top"></a>
                     </li>
                     <li class="page-scroll">
-                        <a href="join.html">Join Now</a> <!--should link to other pages-->
+                        <a href="Logout.php">Sign Out</a>
                     </li>
-                    <!-- <li class="page-scroll">
-                        <a href="login.html">Sign in</a>
-                    </li> -->
+                    <li class="page-scroll">
+                        <a href="AccountPage.php">Your Account</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container-fluid -->
     </nav>
+	
+	<section id="portfolio">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>All Available Cars</h2>
+                    <hr class="star-primary">
+                </div>
+            </div>
+            <div class="row">
+			<?php
+			session_start();
+			$dropoff = $_POST["dropoffdate"];
+			$pickup = $_POST["pickupdate"];
+			$_SESSION["pickup"] = $pickup;
+			$_SESSION["dropoff"] = $dropoff;
+	
+			try{
+				$dbh = new PDO('mysql:host=localhost;dbname=ktcs', 'cisc332', 'cisc332password');
+				$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				
+				$available = $dbh->query("SELECT CarVINcode, Make, Model
+										FROM cars
+										WHERE cars.CarVINcode NOT IN
+											(SELECT CarVINcode
+												FROM CARS NATURAL JOIN
+													(SELECT *, DATE_ADD(RentalStartingDate,INTERVAL LengthOfReservation DAY) AS DropOffDate FROM reservation) as t1
+												WHERE '$dropoff' >= RentalStartingDate AND '$pickup' <= DropOffDate)");
+				
+				foreach($available as $a){
+					$name = $a['Make'].$a['Model'];
+					$make = $a['Make'];
+					$model = $a['Model'];
+			
+					echo "<div class='col-sm-4 portfolio-item'>
+							<form method='post' action='detail.php'>
+								<div class='caption'>
+									<div class='caption-content'>
+									</div>
+								</div>
+								<img src='img/portfolio/$name.png' class = 'img-responsive' alt = $name>
+								<input class='button' type='submit' name = 'name' value='$make $model'>
+							</div>
+							</form>";
+				}
+				
+				$dbh = null;
+			} catch(PDOException $e){
+				echo "<h2>No Updating to the Database.<br>The Email Address Has Been Used For Signing Up This Conference.</h2>";
+				die();
+			}
+			?>
+		</div>
+	</section>
 
-    <!-- Header -->
-    <header>
-        <div class="container" id="maincontent" tabindex="-1">
-			<div class = "data">
-				<!--form form name = "Date" action = ".php" method = "POST" enctype = "multipart/form-data"-->
-				<form name = "signin" action = "logincheck.php" method = "POST" enctype = "multipart/form-data">
-					<h2>Sign in:</h2>
-					<p>Email Address: <input type = "email" name = "loginemail" style = "color:black"></p>
-					<p>Password: <input type = "password" name = "password" style = "color:black"></p>
-					<p><input class = "button" type = "submit" name = "Login" value = "login"></p>
-				</form>
-			</div>
-        </div>
-    </header>
-    <header>
-        <div class="container" id="maincontent" tabindex="-1">
-        </div>
-    </header>
-</div>
 </body>
 </html>

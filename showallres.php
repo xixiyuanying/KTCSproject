@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>K-Town Car Share</title>
+    <title>Find all reservations</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -31,7 +31,6 @@
 
 </head>
 
-
 <body id="page-top" class="index">
 <div id="skipnav"><a href="#maincontent">Skip to main content</a></div>
 
@@ -43,7 +42,7 @@
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="Main.html">K-Town Car Share</a>
+                <a class="navbar-brand" href="UserMain.html">K-Town Car Share</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -53,36 +52,59 @@
                         <a href="#page-top"></a>
                     </li>
                     <li class="page-scroll">
-                        <a href="join.html">Join Now</a> <!--should link to other pages-->
+                        <a href="Logout.php">Sign Out</a>
                     </li>
-                    <!-- <li class="page-scroll">
-                        <a href="login.html">Sign in</a>
-                    </li> -->
+                    <li class="page-scroll">
+                        <a href="AccountPage.php">Your Account</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container-fluid -->
     </nav>
+ 
+    
+    
+	<section id="alldamagecars">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>All the reservations</h2>
+                    <hr class="star-primary">
+                </div>
+            </div>
+			<?php
+				$reservationDate = $_POST['showresdate'];
+                //echo "reservation date is $reservationDate";
+				//$email = $_SESSION["emaillogined"];
+				
+                try{
+					$dbh = new PDO('mysql:host=localhost;dbname=ktcs', 'cisc332', 'cisc332password');
+					$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+					$rows = $dbh->query("SELECT * FROM reservation WHERE ReservationDate = '$reservationDate'");
+					foreach($rows as $row){
+						echo "
+						<div>
+						<p>Reservation Number: $row[0]</p>
+						<p>Member Number: $row[1]</p>
+						<p>Car VIN code: $row[2]</p>
+						<p>Rental Starting From: $row[3]</p>
+						<p>Length Of Reservation: $row[4]</p>
+						<p>Access Code: $row[5]</p>
+						<p>Reservation Date: $row[6]</p>
+						<p>_________________________________________________</p>
+						</div>";
+					}
+				}catch (PDOException $e){
+					echo "<h2>Failed to connect with the database.</h2>";
+				}
+			?>
+            
+        </div>
+    </section>
 
-    <!-- Header -->
-    <header>
-        <div class="container" id="maincontent" tabindex="-1">
-			<div class = "data">
-				<!--form form name = "Date" action = ".php" method = "POST" enctype = "multipart/form-data"-->
-				<form name = "signin" action = "logincheck.php" method = "POST" enctype = "multipart/form-data">
-					<h2>Sign in:</h2>
-					<p>Email Address: <input type = "email" name = "loginemail" style = "color:black"></p>
-					<p>Password: <input type = "password" name = "password" style = "color:black"></p>
-					<p><input class = "button" type = "submit" name = "Login" value = "login"></p>
-				</form>
-			</div>
-        </div>
-    </header>
-    <header>
-        <div class="container" id="maincontent" tabindex="-1">
-        </div>
-    </header>
-</div>
+
+	
 </body>
 </html>
